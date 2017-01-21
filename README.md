@@ -47,7 +47,6 @@ npm run dev
 <pre>
 ├── build              // 构建服务和webpack配置
 ├── config             // 项目不同环境的配置
-├── dist               // 项目build目录
 ├── index.html         // 项目入口文件
 ├── package.json       // 项目配置文件
 ├── src                // 生产目录
