@@ -1,71 +1,20 @@
 <template>
-  <div>
-    <!--头部-->
-    <v-header :seller='seller'></v-header>
-    <!--tab-->
-    <div class="tab border-1px">
-      <div class="tab-item">
-        <a v-link="{path:'/goods'}">商品</a>
-      </div>
-      <div class="tab-item">
-        <a v-link="{path:'/ratings'}">评论</a>
-      </div>
-      <div class="tab-item">
-        <a v-link="{path:'/seller'}">商家</a></div>
-    </div>
-    <!--keep-alive保存组件的状态-->
-    <router-view :seller='seller' keep-alive></router-view>
+  <div id="app">
+    <cube-button>啊啊啊</cube-button>
   </div>
 </template>
 
-<script type="text/ecmascript-6">
-  import {urlParse} from 'common/js/util';
-  import header from './components/header/header.vue';
-  const ERR_OK = 0;
-
-  export default{
-    data() {
-      return {
-        seller: {
-          id: (() => {
-            let queryParm = urlParse();
-            return queryParm.id;
-          })()
-        }
-      };
-    },
-    created() {
-      this.$http.get('/api/seller?id=' + this.seller.id).then((response) => {
-        response = response.body;
-        if (response.errno === ERR_OK) {
-          // this.seller = response.data;
-          this.seller = Object.assign({}, this.seller, response.data);
-          console.log(this.seller.id);
-        }
-      });
-    },
-    components: {
-      'v-header': header
-    }
-  };
+<script>
+export default {
+  name: 'app'
+}
 </script>
-
-<style lang="stylus" rel="stylesheet/stylus">
-  @import "./common/stylus/mixin.styl"
-
-  .tab
-    display: flex
-    width: 100%
-    height: 40px
-    line-height: 40px
-    border-1px(rgba(7, 17, 27, 0.1))
-    .tab-item
-      flex: 1
-      text-align: center
-      & > a
-        display: block
-        font-size: 14px
-        color: rgb(77, 85, 93)
-        &.active
-          color: rgb(240, 20, 20)
+<style lang="stylus">
+  #app
+    font-family 'Avenir', Helvetica, Arial, sans-serif
+    -webkit-font-smoothing antialiased
+    -moz-osx-font-smoothing grayscale
+    text-align center
+    color #2c3e50
+    margin-top 60px
 </style>
