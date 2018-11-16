@@ -1,3 +1,8 @@
+const appData = require('./data')
+const seller = appData.seller
+const goods = appData.goods
+const ratings = appData.ratings
+
 module.exports = {
   // 基本路径
   baseUrl: '/',
@@ -40,7 +45,26 @@ module.exports = {
     https: false,
     hotOnly: false,
     proxy: null, // 设置代理
-    before: app => {}
+    before: app => {
+      app.get('/api/seller', (req, res) => {
+        res.json({
+          status: 1,
+          data: seller
+        })
+      })
+      app.get('/api/goods', (req, res) => {
+        res.json({
+          status: 1,
+          data: goods
+        })
+      })
+      app.get('/api/ratings', (req, res) => {
+        res.json({
+          status: 1,
+          data: ratings
+        })
+      })
+    }
   },
   // enabled by default if the machine has more than 1 cores
   parallel: require('os').cpus().length > 1,
