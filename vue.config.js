@@ -5,6 +5,11 @@ const seller = appData.seller
 const goods = appData.goods
 const ratings = appData.ratings
 
+// 去console插件
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+// gzip压缩插件
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
+
 function resolve (dir) {
   return path.join(__dirname, dir)
 }
@@ -27,16 +32,42 @@ module.exports = {
   // 生产环境sourceMap
   productionSourceMap: false,
   // webpack配置
-  configureWebpack: () => {},
+  configureWebpack: config => {
+    let plugins = [
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          compress: {
+            warnings: false,
+            drop_debugger: true,
+            drop_console: true
+          }
+        },
+        sourceMap: false,
+        parallel: true
+      }),
+      new CompressionWebpackPlugin({
+        filename: '[path].gz[query]',
+        algorithm: 'gzip',
+        test: new RegExp(
+          '\\.(' +
+          ['js', 'css'].join('|') +
+          ')$'
+        ),
+        threshold: 10240,
+        minRatio: 0.8
+      })
+    ]
+    if (process.env.NODE_ENV !== 'development') {
+      config.plugins = [...config.plugins, ...plugins]
+    }
+  },
   chainWebpack: config => {
-    config.resolve.alias
-      .set('components', resolve('src/components'))
+    config.resolve.alias.set('components', resolve('src/components'))
       .set('common', resolve('src/common'))
       .set('api', resolve('src/api'))
 
-    config.plugin('context')
-      .use(webpack.ContextReplacementPlugin,
-        [/moment[/\\]locale$/, /zh-cn/])
+    config.plugin('context').use(webpack.ContextReplacementPlugin,
+      [/moment[/\\]locale$/, /zh-cn/])
   },
   // css相关配置
   css: {
