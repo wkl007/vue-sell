@@ -62,9 +62,11 @@ module.exports = {
     }
   },
   chainWebpack: config => {
-    config.resolve.alias.set('components', resolve('src/components'))
-      .set('common', resolve('src/common'))
+    config.resolve.alias
       .set('api', resolve('src/api'))
+      .set('assets', resolve('src/assets'))
+      .set('components', resolve('src/components'))
+      .set('utils', resolve('src/utils'))
 
     config.plugin('context').use(webpack.ContextReplacementPlugin,
       [/moment[/\\]locale$/, /zh-cn/])
@@ -72,7 +74,7 @@ module.exports = {
   // css相关配置
   css: {
     modules: false,
-    extract: true,
+    extract: false,
     sourceMap: false,
     loaderOptions: {
       stylus: {
