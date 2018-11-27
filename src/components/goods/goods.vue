@@ -16,8 +16,15 @@
           >
             <template slot-scope="props">
               <div class="text">
+                <support-ico
+                  v-if="props.txt.type>=1"
+                  :size="3"
+                  :type="props.txt.type"
+                />
                 <span>{{props.txt.name}}</span>
-                <span class="num" v-if="props.txt.count"></span>
+                <span class="num" v-if="props.txt.count">
+                  <bubble :num="props.txt.count"/>
+                </span>
               </div>
             </template>
           </cube-scroll-nav-bar>
@@ -86,8 +93,8 @@
       },
     },
     components: {
-      // Bubble,
-      // SupportIco,
+      Bubble,
+      SupportIco,
       CartControl,
       ShopCart,
       // Food,
