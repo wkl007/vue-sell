@@ -1,16 +1,25 @@
 <template>
-  <div class="hello">
-
+  <div class="seller">
+    seller
   </div>
 </template>
 
 <script>
-export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  export default {
+    name: 'seller',
+    props: {
+      data: Object,
+      default () {
+        return {}
+      },
+    },
   }
-}
 </script>
-<style>
+<style lang="stylus" scoped>
+  @import "~assets/stylus/variable"
+  @import "~assets/stylus/mixin"
+
+  .seller
+    height 100%
+    text-align right
 </style>

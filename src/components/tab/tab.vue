@@ -19,9 +19,17 @@
         @scroll="onScroll"
         @change="onChange"
       >
-        <cube-slide-item>1</cube-slide-item>
-        <cube-slide-item>2</cube-slide-item>
-        <cube-slide-item>3</cube-slide-item>
+        <cube-slide-item
+          v-for="(tab,index) in tabs"
+          :key="index"
+        >
+          <!--动态组件-->
+          <component
+            ref="component"
+            :is="tab.component"
+            :data="tab.data"
+          />
+        </cube-slide-item>
       </cube-slide>
     </div>
   </div>
@@ -64,8 +72,8 @@
         },
       }
     },
-    created () {
-
+    mounted () {
+      this.onChange(this.index)
     },
     methods: {
       onScroll (pos) {
@@ -76,6 +84,10 @@
       },
       onChange (current) {
         this.index = current
+        const instance = this.$refs.component[current]
+        if (instance && instance.fetch) {
+          instance.fetch()
+        }
       },
     },
   }

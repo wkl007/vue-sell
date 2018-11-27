@@ -1,16 +1,21 @@
 <template>
-  <div class="hello">
-
+  <div class="ratings">
+    ratings
   </div>
 </template>
 
 <script>
-export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  export default {
+    name: 'ratings',
+    props: {
+      data: Object,
+      default () {
+        return {}
+      },
+    },
   }
-}
 </script>
-<style>
+<style lang="stylus" scoped>
+  @import "~assets/stylus/variable"
+  @import "~assets/stylus/mixin"
 </style>

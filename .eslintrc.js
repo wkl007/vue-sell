@@ -14,6 +14,13 @@ module.exports = {
     'indent':0,//缩进
     "comma-dangle": [0, "never"],//对象字面量项尾不能有逗号
     "handle-callback-err": 0,//nodejs 处理错误
+    "object-curly-spacing": [0, "never"],//大括号内是否允许不必要的空格
+    "no-unused-vars": [0, {
+      // 允许声明未使用变量
+      "vars": "local",
+      // 参数不检查
+      "args": "none"
+    }],
   },
   parserOptions: {
     parser: 'babel-eslint'
