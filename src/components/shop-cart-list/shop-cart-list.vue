@@ -8,7 +8,9 @@
       type="shop-cart-list"
       :z-index="90"
     >
-      <transition name="move">
+      <transition name="move"
+                  @after-leave="afterLeave"
+      >
         <div v-show="visible">
           <div class="list-header">
             <h1 class="title">购物车</h1>
@@ -49,24 +51,54 @@
     name: 'shop-cart-list',
     mixins: [popupMixin],
     props: {
-      msg: String,
+      selectFoods: {
+        type: Array,
+        default () {
+          return []
+        },
+      },
     },
     components: {
       CartControl,
     },
+    created () {
+      // 购物车列表显示刷新滚动
+      this.$on(EVENT_SHOW, () => {
+        this.$nextTick(() => {
+          this.$refs.listContent.refresh()
+        })
+      })
+    },
     methods: {
       onAdd (target) {
-
+        this.$emit(EVENT_ADD, target)
+      },
+      afterLeave () {
+        this.$emit(EVENT_LEAVE)
       },
       maskClick () {
+        this.hide()
       },
       empty () {
+        this.dialogComp = this.$createDialog({
+          type: 'confirm',
+          content: '清空购物车？',
+          $events: {
+            confirm: () => {
+              this.selectFoods.forEach((food) => {
+                food.count = 0
+              })
+              this.hide()
+            },
+          },
+        })
+        this.dialogComp.show()
       },
     },
   }
 </script>
 <style lang="stylus" scoped>
-  @import "~common/stylus/variable"
+  @import "~assets/stylus/variable"
 
   .cube-shop-cart-list
     bottom: 48px

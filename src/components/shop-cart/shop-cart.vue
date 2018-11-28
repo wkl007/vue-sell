@@ -1,6 +1,6 @@
 <template>
   <div class="shop-cart">
-    <div class="content">
+    <div class="content" @click="toggleList">
       <div class="content-left">
         <div class="logo-wrapper">
           <div class="logo" :class="{'highlight':totalCount>0}">
@@ -16,7 +16,7 @@
         <div class="desc">另需配送费￥{{deliveryPrice}}元</div>
       </div>
       <div class="content-right">
-        <div class="pay" :class="payClass">
+        <div class="pay" :class="payClass" @click="pay">
           {{payDesc}}
         </div>
       </div>
@@ -72,6 +72,10 @@
         type: Boolean,
         default: true,
       },
+      sticky: {
+        type: Boolean,
+        default: false,
+      },
     },
     components: {
       Bubble,
@@ -112,20 +116,21 @@
     data () {
       return {
         balls: createBalls(),
-        listFood: this.fold,
+        listFold: this.fold,
       }
     },
     created () {
       this.dropBalls = []
     },
     methods: {
-      toggleList () {
-
-      },
       // 支付
       pay (e) {
         if (this.totalPrice < this.minPrice) return
-        console.log(this.totalPrice)
+        this.$createDialog({
+          title: '支付',
+          content: `您需要支付${this.totalPrice}元`,
+        }).show()
+        e.stopPropagation()
       },
       drop (el) {
         for (let i = 0; i < this.balls.length; i++) {
@@ -162,13 +167,68 @@
           el.style.display = 'none'
         }
       },
+      // 切换购物车列表
+      toggleList () {
+        if (this.listFold) {
+          if (!this.totalCount) return
+          this.listFold = false
+          this._showShopCartList()
+          this._showShopCartSticky()
+        } else {
+          this.listFold = true
+          this._hideShopCartList()
+        }
+      },
+      // 显示购物车列表
+      _showShopCartList () {
+        this.shopCartListComp = this.shopCartListComp || this.$createShopCartList({
+          $props: {
+            selectFoods: 'selectFoods',
+          },
+          $events: {
+            leave: () => {
+              this._hideShopCartSticky()
+            },
+            hide: () => {
+              this.listFold = true
+            },
+            add: (el) => {
+              // 购物车列表小球滚动
+              this.shopCartStickyComp.drop(el)
+            },
+          },
+        })
+        this.shopCartListComp.show()
+      },
+      _hideShopCartList () {
+        const list = this.sticky ? this.$parent.list : this.shopCartListComp
+        list.hide && list.hide()
+      },
+      // 显示购物车浮层
+      _showShopCartSticky () {
+        this.shopCartStickyComp = this.shopCartStickyComp || this.$createShopCartSticky({
+          $props: {
+            selectFoods: 'selectFoods',
+            deliveryPrice: 'deliveryPrice',
+            minPrice: 'minPrice',
+            fold: 'listFold',
+            list: this.shopCartListComp,
+          },
+        })
+        this.shopCartStickyComp.show()
+      },
+      _hideShopCartSticky () {
+        this.shopCartStickyComp.hide()
+      },
     },
     watch: {
       fold (newVal) {
         this.listFold = newVal
       },
       totalCount (count) {
+        // 购物车列表展开的情况 价格为0
         if (!this.fold && count === 0) {
+          this._hideShopCartList()
         }
       },
     },
