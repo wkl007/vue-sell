@@ -1,6 +1,6 @@
 const webpack = require('webpack')
 const path = require('path')
-const appData = require('./data')
+const appData = require('./public/data')
 const seller = appData.seller
 const goods = appData.goods
 const ratings = appData.ratings
@@ -39,11 +39,11 @@ module.exports = {
           compress: {
             warnings: false,
             drop_debugger: true,
-            drop_console: true
-          }
+            drop_console: true,
+          },
         },
         sourceMap: false,
-        parallel: true
+        parallel: true,
       }),
       new CompressionWebpackPlugin({
         filename: '[path].gz[query]',
@@ -51,11 +51,11 @@ module.exports = {
         test: new RegExp(
           '\\.(' +
           ['js', 'css'].join('|') +
-          ')$'
+          ')$',
         ),
         threshold: 10240,
-        minRatio: 0.8
-      })
+        minRatio: 0.8,
+      }),
     ]
     if (process.env.NODE_ENV !== 'development') {
       config.plugins = [...config.plugins, ...plugins]
@@ -80,10 +80,10 @@ module.exports = {
       stylus: {
         'resolve url': true,
         'import': [
-          './src/theme'
-        ]
-      }
-    }
+          './src/theme',
+        ],
+      },
+    },
   },
   // webpack-dev-server 相关配置
   devServer: {
@@ -97,22 +97,22 @@ module.exports = {
       app.get('/api/seller', (req, res) => {
         res.json({
           status: 1,
-          data: seller
+          data: seller,
         })
       })
       app.get('/api/goods', (req, res) => {
         res.json({
           status: 1,
-          data: goods
+          data: goods,
         })
       })
       app.get('/api/ratings', (req, res) => {
         res.json({
           status: 1,
-          data: ratings
+          data: ratings,
         })
       })
-    }
+    },
   },
   // enabled by default if the machine has more than 1 cores
   parallel: require('os').cpus().length > 1,
@@ -122,7 +122,7 @@ module.exports = {
   pluginOptions: {
     'cube-ui': {
       postCompile: true,
-      theme: true
-    }
-  }
+      theme: true,
+    },
+  },
 }

@@ -40,6 +40,7 @@
               v-for="food in good.foods"
               :key="food.name"
               class="food-item"
+              @click="selectFood(food)"
             >
               <div class="icon">
                 <img width="57" height="57" :src="food.icon" alt="">
@@ -97,7 +98,7 @@
       SupportIco,
       CartControl,
       ShopCart,
-      // Food,
+      Food,
     },
     data () {
       return {
@@ -144,20 +145,38 @@
     methods: {
       // 获取商品
       fetch () {
-        /* if (!this.fetched) {
+        if (!this.fetched) {
           this.fetched = true
-
-        } */
-        ApiServer.getGoods().then(res => {
-          this.goods = res
-        }).catch(err => {})
+          ApiServer.getGoods().then(res => {
+            this.goods = res
+          }).catch(err => {})
+        }
       },
       // 选择商品
       selectFood (food) {
+        this.selectedFood = food
+        this._showFood()
       },
       // 购物车添加
       onAdd (target) {
         this.$refs.shopCart.drop(target)
+      },
+      // 显示商品详情页
+      _showFood () {
+        this.foodComp = this.foodComp || this.$createFood({
+          $props: {
+            food: 'selectedFood',
+          },
+          $events: {
+            add: (target) => {
+              this.shopCartStickyComp.drop(target)
+            },
+            leave: () => {
+              this._hideShopCartSticky()
+            },
+          },
+        })
+        this.foodComp.show()
       },
     },
   }
