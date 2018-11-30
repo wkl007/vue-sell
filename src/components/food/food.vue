@@ -24,7 +24,7 @@
               <span class="now">￥{{food.price}}</span><span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
             </div>
             <div class="cart-control-wrapper">
-              <!--<cart-control @add="addFood" :food="food"/>-->
+              <cart-control @add="addFood" :food="food"/>
             </div>
             <transition name="fade">
               <div class="buy" @click="addFirst" v-show="!food.count">
@@ -40,14 +40,14 @@
           <split/>
           <div class="rating">
             <h1 class="title">商品评价</h1>
-            <!--<rating-select
+            <rating-select
               @select="onSelect"
               @toggle="onToggle"
               :selectType="selectType"
               :onlyContent="onlyContent"
               :desc="desc"
               :ratings="ratings"
-            />-->
+            />
             <div class="rating-wrapper">
               <ul
                 v-show="computedRatings&&computedRatings.length"
@@ -100,8 +100,8 @@
       },
     },
     components: {
-      // CartControl,
-      // RatingSelect,
+      CartControl,
+      RatingSelect,
       Split,
     },
     computed: {
@@ -126,9 +126,16 @@
       })
     },
     methods: {
-      afterLeave () {},
-      addFirst (event) {},
-      addFood (target) {},
+      afterLeave () {
+        this.$emit(EVENT_LEAVE)
+      },
+      addFirst (event) {
+        this.$set(this.food, 'count', 1)
+        this.$emit(EVENT_ADD, event.target)
+      },
+      addFood (target) {
+        this.$emit(EVENT_ADD, target)
+      },
       format (time) {
         return moment(time).format('YYYY-MM-DD hh:mm')
       },

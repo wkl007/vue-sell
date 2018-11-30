@@ -67,7 +67,7 @@ module.exports = {
       .set('assets', resolve('src/assets'))
       .set('components', resolve('src/components'))
       .set('utils', resolve('src/utils'))
-
+    // 处理moment加载多个语言文件问题
     config.plugin('context').use(webpack.ContextReplacementPlugin,
       [/moment[/\\]locale$/, /zh-cn/])
   },

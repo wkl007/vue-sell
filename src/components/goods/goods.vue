@@ -147,7 +147,10 @@
       fetch () {
         if (!this.fetched) {
           this.fetched = true
-          ApiServer.getGoods().then(res => {
+          let params = {
+            id: this.seller.id,
+          }
+          ApiServer.getGoods(params).then(res => {
             this.goods = res
           }).catch(err => {})
         }
@@ -156,6 +159,7 @@
       selectFood (food) {
         this.selectedFood = food
         this._showFood()
+        this._showShopCartSticky()
       },
       // 购物车添加
       onAdd (target) {
@@ -177,6 +181,21 @@
           },
         })
         this.foodComp.show()
+      },
+      // 显示购物车浮层
+      _showShopCartSticky () {
+        this.shopCartStickyComp = this.shopCartStickyComp || this.$createShopCartSticky({
+          $props: {
+            selectFoods: 'selectFoods',
+            deliveryPrice: this.seller.deliveryPrice,
+            minPrice: this.seller.minPrice,
+            fold: true,
+          },
+        })
+        this.shopCartStickyComp.show()
+      },
+      _hideShopCartSticky () {
+        this.shopCartStickyComp.hide()
       },
     },
   }

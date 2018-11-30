@@ -2,7 +2,7 @@
   <div id="app">
     <v-header :seller="seller"/>
     <div class="tab-wrapper">
-      <tab :tabs="tabs"/>
+      <tab :tabs="tabs" :initialIndex="0"/>
     </div>
   </div>
 </template>
@@ -13,6 +13,7 @@
   import Goods from 'components/goods/goods'
   import Ratings from 'components/ratings/ratings'
   import Seller from 'components/seller/seller'
+  import qs from 'qs'
   import ApiServer from 'api'
 
   export default {
@@ -50,7 +51,9 @@
     },
     data () {
       return {
-        seller: {},
+        seller: {
+          id: qs.parse(location.search.slice(1)).id,
+        },
       }
     },
     created () {
@@ -59,7 +62,10 @@
     methods: {
       // 获取商家信息
       _getSeller () {
-        ApiServer.getSeller().then(res => {
+        let params = {
+          id: this.seller.id,
+        }
+        ApiServer.getSeller(params).then(res => {
           this.seller = Object.assign({}, this.seller, res)
         }).catch(err => {})
       },

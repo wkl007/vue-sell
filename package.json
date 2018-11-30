@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --report",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "cube-ui": "~1.12.1",
+    "good-storage": "^1.1.0",
     "moment": "^2.22.2",
     "vue": "^2.5.17"
   },
