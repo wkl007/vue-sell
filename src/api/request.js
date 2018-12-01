@@ -1,12 +1,7 @@
 import axios from 'axios'
 
-const urlMap = {
-  development: '/',
-  production: 'http://ustbhuangyi.com/sell/',
-}
-
 const service = axios.create({
-  baseURL: urlMap[process.env.NODE_ENV], // api的base_url
+  baseURL: 'https://vue-sell-1256738511.cos.ap-chengdu.myqcloud.com/', // api的base_url
   timeout: 5000, // request timeout
 })
 
