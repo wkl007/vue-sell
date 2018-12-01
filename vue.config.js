@@ -74,7 +74,6 @@ module.exports = {
   // css相关配置
   css: {
     modules: false,
-    extract: false,
     sourceMap: false,
     loaderOptions: {
       stylus: {
