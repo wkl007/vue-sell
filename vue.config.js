@@ -16,7 +16,7 @@ function resolve (dir) {
 
 module.exports = {
   // 基本路径
-  baseUrl: '/',
+  publicPath: '/',
   // 输出文件目录
   outputDir: 'dist',
   // 用于嵌套生成的静态资产（js，css，img，fonts）的目录。
