@@ -102,40 +102,51 @@
 
   .cube-shop-cart-list
     bottom: 48px
+
     &.fade-enter, &.fade-leave-active
       opacity: 0
+
     &.fade-enter-active, &.fade-leave-active
       transition: all .3s ease-in-out
+
     .move-enter, .move-leave-active
       transform: translate3d(0, 100%, 0)
+
     .move-enter-active, .move-leave-active
       transition: all .3s ease-in-out
+
     .list-header
       height: 40px
       line-height: 40px
       padding: 0 18px
       background: $color-background-ssss
+
       .title
         float: left
         font-size: $fontsize-medium
         color: $color-dark-grey
+
       .empty
         float: right
         font-size: $fontsize-small
         color: $color-blue
+
     .list-content
       padding: 0 18px
       max-height: 217px
       overflow: hidden
       background: $color-white
+
       .food
         position: relative
         padding: 12px 0
         box-sizing: border-box
+
         .name
           line-height: 24px
           font-size: $fontsize-medium
           color: $color-dark-grey
+
         .price
           position: absolute
           right: 90px
@@ -144,6 +155,7 @@
           font-weight: 700
           font-size: $fontsize-medium
           color: $color-red
+
         .cart-control-wrapper
           position: absolute
           right: 0

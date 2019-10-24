@@ -73,6 +73,8 @@
   }
 </script>
 <style lang="stylus" scoped>
+  @import "~assets/stylus/base.styl"
+
   #app
     .tab-wrapper
       position fixed

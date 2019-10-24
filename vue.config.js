@@ -73,7 +73,7 @@ module.exports = {
   },
   // css相关配置
   css: {
-    modules: false,
+    requireModuleExtension: false,
     sourceMap: false,
     loaderOptions: {
       stylus: {

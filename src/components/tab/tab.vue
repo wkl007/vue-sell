@@ -99,8 +99,10 @@
     display flex
     flex-direction column
     height 100%
+
     >>> .cube-tab
       padding 10px 0
+
     .slider-wrapper
       flex 1
       overflow: hidden

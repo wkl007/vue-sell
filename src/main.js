@@ -3,7 +3,7 @@ import './cube-ui'
 import './utils/register'
 import App from './App.vue'
 
-import 'assets/stylus/index.styl'
+import 'assets/stylus/base.styl'
 
 Vue.config.productionTip = false
 
