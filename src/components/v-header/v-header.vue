@@ -42,37 +42,37 @@
 </template>
 
 <script>
-  import SupportIco from 'components/support-ico/support-ico'
+import SupportIco from '@/components/support-ico/support-ico'
 
-  export default {
-    name: 'v-header',
-    props: {
-      seller: {
-        type: Object,
-        default () {
-          return {}
+export default {
+  name: 'v-header',
+  props: {
+    seller: {
+      type: Object,
+      default () {
+        return {}
+      },
+    },
+  },
+  components: {
+    SupportIco,
+  },
+  methods: {
+    showDetail () {
+      this.headerDetailComp = this.headerDetailComp || this.$createHeaderDetail({
+        $props: {
+          seller: 'seller',
         },
-      },
+      })
+      this.headerDetailComp.show()
     },
-    components: {
-      SupportIco,
-    },
-    methods: {
-      showDetail () {
-        this.headerDetailComp = this.headerDetailComp || this.$createHeaderDetail({
-          $props: {
-            seller: 'seller',
-          },
-        })
-        this.headerDetailComp.show()
-      },
-    },
-  }
+  },
+}
 </script>
 <style lang="stylus">
-  @import "~assets/stylus/mixin"
-  @import "~assets/stylus/variable"
-  @import "~assets/stylus/icon"
+  @import "~@/assets/stylus/mixin"
+  @import "~@/assets/stylus/variable"
+  @import "~@/assets/stylus/icon"
 
   .header
     position relative

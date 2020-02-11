@@ -16,65 +16,65 @@
 </template>
 
 <script>
-  const POSITIVE = 0
-  const NEGATIVE = 1
-  const ALL = 2
+const POSITIVE = 0
+const NEGATIVE = 1
+const ALL = 2
 
-  const EVENT_TOGGLE = 'toggle'
-  const EVENT_SELECT = 'select'
+const EVENT_TOGGLE = 'toggle'
+const EVENT_SELECT = 'select'
 
-  export default {
-    name: 'rating-select',
-    props: {
-      ratings: {
-        type: Array,
-        default () {
-          return []
-        },
-      },
-      selectType: {
-        type: Number,
-        default: ALL,
-      },
-      onlyContent: {
-        type: Boolean,
-        default: false,
-      },
-      desc: {
-        type: Object,
-        default () {
-          return {
-            all: '全部',
-            positive: '满意',
-            negative: '不满意',
-          }
-        },
+export default {
+  name: 'rating-select',
+  props: {
+    ratings: {
+      type: Array,
+      default () {
+        return []
       },
     },
-    computed: {
-      positives () {
-        return this.ratings.filter((rating) => {
-          return rating.rateType === POSITIVE
-        })
-      },
-      negatives () {
-        return this.ratings.filter((rating) => {
-          return rating.rateType === NEGATIVE
-        })
+    selectType: {
+      type: Number,
+      default: ALL,
+    },
+    onlyContent: {
+      type: Boolean,
+      default: false,
+    },
+    desc: {
+      type: Object,
+      default () {
+        return {
+          all: '全部',
+          positive: '满意',
+          negative: '不满意',
+        }
       },
     },
-    methods: {
-      select (type) {
-        this.$emit(EVENT_SELECT, type)
-      },
-      toggleContent () {
-        this.$emit(EVENT_TOGGLE)
-      },
+  },
+  computed: {
+    positives () {
+      return this.ratings.filter((rating) => {
+        return rating.rateType === POSITIVE
+      })
     },
-  }
+    negatives () {
+      return this.ratings.filter((rating) => {
+        return rating.rateType === NEGATIVE
+      })
+    },
+  },
+  methods: {
+    select (type) {
+      this.$emit(EVENT_SELECT, type)
+    },
+    toggleContent () {
+      this.$emit(EVENT_TOGGLE)
+    },
+  },
+}
 </script>
 <style lang="stylus" scoped>
-  @import "~assets/stylus/variable"
+  @import "~@/assets/stylus/variable"
 
   .rating-select
     .rating-type

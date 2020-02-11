@@ -38,206 +38,206 @@
 </template>
 
 <script>
-  import Bubble from 'components/bubble/bubble'
+import Bubble from '@/components/bubble/bubble'
 
-  const BALL_LEN = 10
-  const innerClsHook = 'inner-hook'
+const BALL_LEN = 10
+const innerClsHook = 'inner-hook'
 
-  function createBalls () {
-    let balls = []
-    for (let i = 0; i < BALL_LEN; i++) {
-      balls.push({ show: false })
-    }
-    return balls
+function createBalls () {
+  const balls = []
+  for (let i = 0; i < BALL_LEN; i++) {
+    balls.push({ show: false })
   }
+  return balls
+}
 
-  export default {
-    name: 'shop-cart',
-    props: {
-      selectFoods: {
-        type: Array,
-        default () {
-          return []
-        },
-      },
-      deliveryPrice: {
-        type: Number,
-        default: 0,
-      },
-      minPrice: {
-        type: Number,
-        default: 0,
-      },
-      fold: {
-        type: Boolean,
-        default: true,
-      },
-      sticky: {
-        type: Boolean,
-        default: false,
+export default {
+  name: 'shop-cart',
+  props: {
+    selectFoods: {
+      type: Array,
+      default () {
+        return []
       },
     },
-    components: {
-      Bubble,
+    deliveryPrice: {
+      type: Number,
+      default: 0,
     },
-    computed: {
-      totalPrice () {
-        let total = 0
-        this.selectFoods.forEach((food) => {
-          total += food.price * food.count
-        })
-        return total
-      },
-      totalCount () {
-        let count = 0
-        this.selectFoods.forEach((food) => {
-          count += food.count
-        })
-        return count
-      },
-      payDesc () {
-        if (this.totalPrice === 0) {
-          return `￥${this.minPrice}元起送`
-        } else if (this.totalPrice < this.minPrice) {
-          let diff = this.minPrice - this.totalPrice
-          return `还差￥${diff}元起送`
-        } else {
-          return '去结算'
-        }
-      },
-      payClass () {
-        if (!this.totalCount || this.totalPrice < this.minPrice) {
-          return 'not-enough'
-        } else {
-          return 'enough'
-        }
-      },
+    minPrice: {
+      type: Number,
+      default: 0,
     },
-    data () {
-      return {
-        balls: createBalls(),
-        listFold: this.fold,
+    fold: {
+      type: Boolean,
+      default: true,
+    },
+    sticky: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  components: {
+    Bubble,
+  },
+  computed: {
+    totalPrice () {
+      let total = 0
+      this.selectFoods.forEach((food) => {
+        total += food.price * food.count
+      })
+      return total
+    },
+    totalCount () {
+      let count = 0
+      this.selectFoods.forEach((food) => {
+        count += food.count
+      })
+      return count
+    },
+    payDesc () {
+      if (this.totalPrice === 0) {
+        return `￥${this.minPrice}元起送`
+      } else if (this.totalPrice < this.minPrice) {
+        const diff = this.minPrice - this.totalPrice
+        return `还差￥${diff}元起送`
+      } else {
+        return '去结算'
       }
     },
-    created () {
-      this.dropBalls = []
+    payClass () {
+      if (!this.totalCount || this.totalPrice < this.minPrice) {
+        return 'not-enough'
+      } else {
+        return 'enough'
+      }
     },
-    methods: {
-      // 支付
-      pay (e) {
-        if (this.totalPrice < this.minPrice) return
-        this.$createDialog({
-          title: '支付',
-          content: `您需要支付${this.totalPrice}元`,
-        }).show()
-        e.stopPropagation()
-      },
-      drop (el) {
-        for (let i = 0; i < this.balls.length; i++) {
-          const ball = this.balls[i]
-          if (!ball.show) {
-            ball.show = true
-            ball.el = el
-            this.dropBalls.push(ball)
-            return
-          }
-        }
-      },
-      beforeDrop (el) {
-        const ball = this.dropBalls[this.dropBalls.length - 1]
-        const rect = ball.el.getBoundingClientRect()
-        const x = rect.left - 32// 运动的x值
-        const y = -(window.innerHeight - rect.top - 22)// 运动的y值
-        el.style.display = ''
-        el.style.transform = el.style.webkitTransform = `translate3d(0,${y}px,0)`
-        const inner = el.getElementsByClassName(innerClsHook)[0]
-        inner.style.transform = inner.style.webkitTransform = `translate3d(${x}px,0,0)`
-      },
-      dropping (el, done) {
-        this._reflow = document.body.offsetHeight
-        el.style.transform = el.style.webkitTransform = `translate3d(0,0,0)`
-        const inner = el.getElementsByClassName(innerClsHook)[0]
-        inner.style.transform = el.style.webkitTransform = `translate3d(0,0,0)`
-        el.addEventListener('transitionend', done)
-      },
-      afterDrop (el) {
-        const ball = this.dropBalls.shift()
-        if (ball) {
-          ball.show = false
-          el.style.display = 'none'
-        }
-      },
-      // 切换购物车列表
-      toggleList () {
-        if (this.listFold) {
-          if (!this.totalCount) return
-          this.listFold = false
-          this._showShopCartList()
-          this._showShopCartSticky()
-        } else {
-          this.listFold = true
-          this._hideShopCartList()
-        }
-      },
-      // 显示购物车列表
-      _showShopCartList () {
-        this.shopCartListComp = this.shopCartListComp || this.$createShopCartList({
-          $props: {
-            selectFoods: 'selectFoods',
-          },
-          $events: {
-            leave: () => {
-              this._hideShopCartSticky()
-            },
-            hide: () => {
-              this.listFold = true
-            },
-            add: (el) => {
-              // 购物车列表小球滚动
-              this.shopCartStickyComp.drop(el)
-            },
-          },
-        })
-        this.shopCartListComp.show()
-      },
-      _hideShopCartList () {
-        const list = this.sticky ? this.$parent.list : this.shopCartListComp
-        list.hide && list.hide()
-      },
-      // 显示购物车浮层
-      _showShopCartSticky () {
-        this.shopCartStickyComp = this.shopCartStickyComp || this.$createShopCartSticky({
-          $props: {
-            selectFoods: 'selectFoods',
-            deliveryPrice: 'deliveryPrice',
-            minPrice: 'minPrice',
-            fold: 'listFold',
-            list: this.shopCartListComp,
-          },
-        })
-        this.shopCartStickyComp.show()
-      },
-      _hideShopCartSticky () {
-        this.shopCartStickyComp.hide()
-      },
+  },
+  data () {
+    return {
+      balls: createBalls(),
+      listFold: this.fold,
+    }
+  },
+  created () {
+    this.dropBalls = []
+  },
+  methods: {
+    // 支付
+    pay (e) {
+      if (this.totalPrice < this.minPrice) return
+      this.$createDialog({
+        title: '支付',
+        content: `您需要支付${this.totalPrice}元`,
+      }).show()
+      e.stopPropagation()
     },
-    watch: {
-      fold (newVal) {
-        this.listFold = newVal
-      },
-      totalCount (count) {
-        // 购物车列表展开的情况 价格为0
-        if (!this.fold && count === 0) {
-          this._hideShopCartList()
+    drop (el) {
+      for (let i = 0; i < this.balls.length; i++) {
+        const ball = this.balls[i]
+        if (!ball.show) {
+          ball.show = true
+          ball.el = el
+          this.dropBalls.push(ball)
+          return
         }
-      },
+      }
     },
-  }
+    beforeDrop (el) {
+      const ball = this.dropBalls[this.dropBalls.length - 1]
+      const rect = ball.el.getBoundingClientRect()
+      const x = rect.left - 32// 运动的x值
+      const y = -(window.innerHeight - rect.top - 22)// 运动的y值
+      el.style.display = ''
+      el.style.transform = el.style.webkitTransform = `translate3d(0,${y}px,0)`
+      const inner = el.getElementsByClassName(innerClsHook)[0]
+      inner.style.transform = inner.style.webkitTransform = `translate3d(${x}px,0,0)`
+    },
+    dropping (el, done) {
+      this._reflow = document.body.offsetHeight
+      el.style.transform = el.style.webkitTransform = 'translate3d(0,0,0)'
+      const inner = el.getElementsByClassName(innerClsHook)[0]
+      inner.style.transform = el.style.webkitTransform = 'translate3d(0,0,0)'
+      el.addEventListener('transitionend', done)
+    },
+    afterDrop (el) {
+      const ball = this.dropBalls.shift()
+      if (ball) {
+        ball.show = false
+        el.style.display = 'none'
+      }
+    },
+    // 切换购物车列表
+    toggleList () {
+      if (this.listFold) {
+        if (!this.totalCount) return
+        this.listFold = false
+        this._showShopCartList()
+        this._showShopCartSticky()
+      } else {
+        this.listFold = true
+        this._hideShopCartList()
+      }
+    },
+    // 显示购物车列表
+    _showShopCartList () {
+      this.shopCartListComp = this.shopCartListComp || this.$createShopCartList({
+        $props: {
+          selectFoods: 'selectFoods',
+        },
+        $events: {
+          leave: () => {
+            this._hideShopCartSticky()
+          },
+          hide: () => {
+            this.listFold = true
+          },
+          add: (el) => {
+            // 购物车列表小球滚动
+            this.shopCartStickyComp.drop(el)
+          },
+        },
+      })
+      this.shopCartListComp.show()
+    },
+    _hideShopCartList () {
+      const list = this.sticky ? this.$parent.list : this.shopCartListComp
+      list.hide && list.hide()
+    },
+    // 显示购物车浮层
+    _showShopCartSticky () {
+      this.shopCartStickyComp = this.shopCartStickyComp || this.$createShopCartSticky({
+        $props: {
+          selectFoods: 'selectFoods',
+          deliveryPrice: 'deliveryPrice',
+          minPrice: 'minPrice',
+          fold: 'listFold',
+          list: this.shopCartListComp,
+        },
+      })
+      this.shopCartStickyComp.show()
+    },
+    _hideShopCartSticky () {
+      this.shopCartStickyComp.hide()
+    },
+  },
+  watch: {
+    fold (newVal) {
+      this.listFold = newVal
+    },
+    totalCount (count) {
+      // 购物车列表展开的情况 价格为0
+      if (!this.fold && count === 0) {
+        this._hideShopCartList()
+      }
+    },
+  },
+}
 </script>
 
 <style lang="stylus" scoped>
-  @import "~assets/stylus/mixin"
-  @import "~assets/stylus/variable"
+  @import "~@/assets/stylus/mixin"
+  @import "~@/assets/stylus/variable"
 
   .shop-cart
     height 100%

@@ -11,39 +11,39 @@
 </template>
 
 <script>
-  const EVENT_ADD = 'add'
+const EVENT_ADD = 'add'
 
-  export default {
-    name: 'cart-control',
-    props: {
-      food: {
-        type: Object,
-        default () {
-          return {}
-        },
+export default {
+  name: 'cart-control',
+  props: {
+    food: {
+      type: Object,
+      default () {
+        return {}
       },
     },
-    methods: {
-      add (event) {
-        if (!this.food.count) {
-          // 向响应式对象中添加一个属性，并确保这个新属性同样是响应式的，且触发视图更新。
-          this.$set(this.food, 'count', 1)
-        } else {
-          this.food.count++
-        }
-        this.$emit(EVENT_ADD, event.target)
-      },
-      decrease () {
-        if (this.food.count) {
-          this.food.count--
-        }
-      },
+  },
+  methods: {
+    add (event) {
+      if (!this.food.count) {
+        // 向响应式对象中添加一个属性，并确保这个新属性同样是响应式的，且触发视图更新。
+        this.$set(this.food, 'count', 1)
+      } else {
+        this.food.count++
+      }
+      this.$emit(EVENT_ADD, event.target)
     },
-  }
+    decrease () {
+      if (this.food.count) {
+        this.food.count--
+      }
+    },
+  },
+}
 </script>
 
 <style lang="stylus" scoped>
-  @import "~assets/stylus/variable"
+  @import "~@/assets/stylus/variable"
 
   .cart-control
     display flex

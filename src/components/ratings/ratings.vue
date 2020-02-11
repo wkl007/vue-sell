@@ -74,70 +74,70 @@
 </template>
 
 <script>
-  import Star from 'components/star/star'
-  import RatingSelect from 'components/rating-select/rating-select'
-  import Split from 'components/split/split'
-  import RatingMixin from 'utils/mixins/rating'
-  import moment from 'moment'
-  import ApiServer from 'api'
+import Star from '@/components/star/star'
+import RatingSelect from '@/components/rating-select/rating-select'
+import Split from '@/components/split/split'
+import RatingMixin from '@/utils/mixins/rating'
+import moment from 'moment'
+import ApiServer from '@/api'
 
-  export default {
-    name: 'ratings',
-    mixins: [RatingMixin],
-    props: {
-      data: Object,
-      default () {
-        return {}
+export default {
+  name: 'ratings',
+  mixins: [RatingMixin],
+  props: {
+    data: Object,
+    default () {
+      return {}
+    },
+  },
+  components: {
+    Star,
+    RatingSelect,
+    Split,
+  },
+  computed: {
+    seller () {
+      return this.data.seller || {}
+    },
+  },
+  data () {
+    return {
+      ratings: [],
+      scrollOptions: {
+        click: false,
+        directionLockThreshold: 0,
       },
-    },
-    components: {
-      Star,
-      RatingSelect,
-      Split,
-    },
-    computed: {
-      seller () {
-        return this.data.seller || {}
-      },
-    },
-    data () {
-      return {
-        ratings: [],
-        scrollOptions: {
-          click: false,
-          directionLockThreshold: 0,
-        },
+    }
+  },
+  methods: {
+    // 获取评价信息
+    fetch () {
+      if (!this.fetched) {
+        this.fetched = true
+        const params = {
+          id: this.seller.id,
+        }
+        ApiServer.getRatings(params).then((res) => {
+          this.ratings = res
+        })
       }
     },
-    methods: {
-      // 获取评价信息
-      fetch () {
-        if (!this.fetched) {
-          this.fetched = true
-          let params = {
-            id: this.seller.id,
-          }
-          ApiServer.getRatings(params).then((res) => {
-            this.ratings = res
-          })
-        }
-      },
-      format (time) {
-        return moment(time).format('YYYY-MM-DD hh:mm')
-      },
+    format (time) {
+      return moment(time).format('YYYY-MM-DD hh:mm')
     },
-    watch: {
-      selectType () {
-        this.$nextTick(() => {
-          this.$refs.scroll.refresh()
-        })
-      },
+  },
+  watch: {
+    selectType () {
+      this.$nextTick(() => {
+        this.$refs.scroll.refresh()
+      })
     },
-  }
+  },
+}
 </script>
 <style lang="stylus" scoped>
-  @import "~assets/stylus/variable"
-  @import "~assets/stylus/mixin"
+  @import "~@/assets/stylus/variable"
+  @import "~@/assets/stylus/mixin"
 
   .ratings
     position: relative

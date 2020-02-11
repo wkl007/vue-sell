@@ -3,33 +3,60 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "commit": "git-cz",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "report": "vue-cli-service build --report"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "axios": "^0.19.0",
-    "core-js": "^3.3.2",
-    "cube-ui": "~1.12.32",
+    "axios": "^0.19.2",
+    "core-js": "^3.6.4",
+    "cube-ui": "^1.12.34",
     "good-storage": "^1.1.0",
     "moment": "^2.24.0",
-    "vue": "^2.6.10"
+    "register-service-worker": "^1.6.2",
+    "vue": "^2.6.11"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.0.5",
-    "@vue/cli-plugin-eslint": "^4.0.5",
-    "@vue/cli-service": "^4.0.5",
-    "@vue/eslint-config-standard": "^4.0.0",
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@vue/cli-plugin-babel": "~4.2.0",
+    "@vue/cli-plugin-eslint": "~4.2.0",
+    "@vue/cli-plugin-pwa": "~4.2.0",
+    "@vue/cli-service": "~4.2.0",
+    "@vue/eslint-config-standard": "^5.1.0",
     "babel-eslint": "^10.0.3",
-    "compression-webpack-plugin": "^3.0.0",
-    "eslint": "^6.5.1",
-    "eslint-plugin-vue": "^5.2.3",
+    "commitizen": "^4.0.3",
+    "compression-webpack-plugin": "^3.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "eslint-plugin-vue": "^6.1.2",
+    "husky": "^4.2.1",
+    "lint-staged": "^10.0.7",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
-    "uglifyjs-webpack-plugin": "^2.2.0",
-    "vue-cli-plugin-cube-ui": "^0.2.5",
-    "vue-template-compiler": "^2.6.10"
+    "terser-webpack-plugin": "^2.3.4",
+    "vue-cli-plugin-cube-ui": "~0.2.5",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,vue}": [
+      "vue-cli-service lint"
+    ]
   },
   "transformModules": {
     "cube-ui": {

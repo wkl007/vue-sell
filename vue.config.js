@@ -1,26 +1,26 @@
-const webpack = require('webpack')
 const path = require('path')
+const webpack = require('webpack')
 const appData = require('./public/data')
 const seller = appData.seller
 const goods = appData.goods
 const ratings = appData.ratings
 
-// 去console插件
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-// gzip压缩插件
-const CompressionWebpackPlugin = require('compression-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')// 去console插件
+const CompressionWebpackPlugin = require('compression-webpack-plugin')// gzip压缩插件
 
-function resolve (dir) {
-  return path.join(__dirname, dir)
-}
+const resolve = dir => path.join(__dirname, dir)
 
 module.exports = {
   // 基本路径
   publicPath: '/',
   // 输出文件目录
   outputDir: 'dist',
-  // 用于嵌套生成的静态资产（js，css，img，fonts）的目录。
-  // assetsDir: '',
+  // 用于嵌套生成的静态资产（js，css，img，fonts）的目录
+  assetsDir: '',
+  // 指定生成的 index.html 的输出路径 (相对于 outputDir)
+  indexPath: 'index.html',
+  // 静态资源在它们的文件名中包含了 hash 以便更好的控制缓存
+  filenameHashing: true,
   // 以多页模式构建应用程序。
   pages: undefined,
   // eslint-loader 是否在保存的时候检查
@@ -31,13 +31,21 @@ module.exports = {
   transpileDependencies: [],
   // 生产环境sourceMap
   productionSourceMap: false,
+  // 设置生成的 HTML 中 <link rel="stylesheet"> 和 <script> 标签的 crossorigin 属性
+  crossorigin: undefined,
+  // 在生成的 HTML 中的 <link rel="stylesheet"> 和 <script> 标签上启用 Subresource Integrity (SRI)
+  integrity: false,
   // webpack配置
   configureWebpack: config => {
-    let plugins = [
-      new UglifyJsPlugin({
-        uglifyOptions: {
+    // config.name = name
+    const plugins = [
+      // 忽略moment locale文件
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+      // 去console
+      new TerserPlugin({
+        terserOptions: {
+          warnings: false,
           compress: {
-            warnings: false,
             drop_debugger: true,
             drop_console: true,
           },
@@ -45,6 +53,7 @@ module.exports = {
         sourceMap: false,
         parallel: true,
       }),
+      // gzip压缩
       new CompressionWebpackPlugin({
         filename: '[path].gz[query]',
         algorithm: 'gzip',
@@ -57,36 +66,37 @@ module.exports = {
         minRatio: 0.8,
       }),
     ]
-    if (process.env.NODE_ENV !== 'development') {
+    if (process.env.NODE_ENV === 'production') {
       config.plugins = [...config.plugins, ...plugins]
     }
   },
   chainWebpack: config => {
     config.resolve.alias
-      .set('api', resolve('src/api'))
-      .set('assets', resolve('src/assets'))
-      .set('components', resolve('src/components'))
-      .set('utils', resolve('src/utils'))
-    // 处理moment加载多个语言文件问题
-    config.plugin('context').use(webpack.ContextReplacementPlugin,
-      [/moment[/\\]locale$/, /zh-cn/])
+      .set('@', resolve('src'))
   },
   // css相关配置
   css: {
-    requireModuleExtension: false,
+    // 启用 CSS modules
+    requireModuleExtension: true,
+    // 开启 CSS source maps
     sourceMap: false,
+    // css预设器配置项
     loaderOptions: {
       stylus: {
         'resolve url': true,
-        'import': [
-          './src/theme',
-        ],
-      },
+        import: [
+          './src/assets/stylus/theme',
+        ]
+      }
     },
   },
-  // webpack-dev-server 相关配置
+  // webpack-dev-server配置
   devServer: {
     open: true, // 打开浏览器
+    overlay: {
+      warnings: false,
+      errors: false
+    },
     host: '0.0.0.0',
     port: 8080,
     https: false,
@@ -111,17 +121,16 @@ module.exports = {
           data: ratings,
         })
       })
-    },
+    }
   },
   // enabled by default if the machine has more than 1 cores
   parallel: require('os').cpus().length > 1,
-  // PWA 插件相关配置
   pwa: {},
-  // 第三方插件配置
+  // 第三方插件选项
   pluginOptions: {
     'cube-ui': {
       postCompile: true,
       theme: true,
     },
-  },
+  }
 }

@@ -48,30 +48,30 @@
 </template>
 
 <script>
-  import popupMixin from 'utils/mixins/popup'
-  import Star from 'components/star/star'
-  import SupportIco from 'components/support-ico/support-ico'
+import popupMixin from '@/utils/mixins/popup'
+import Star from '@/components/star/star'
+import SupportIco from '@/components/support-ico/support-ico'
 
-  export default {
-    name: 'header-detail',
-    mixins: [popupMixin],
-    props: {
-      seller: {
-        type: Object,
-        default () {
-          return {}
-        },
+export default {
+  name: 'header-detail',
+  mixins: [popupMixin],
+  props: {
+    seller: {
+      type: Object,
+      default () {
+        return {}
       },
     },
-    components: {
-      Star,
-      SupportIco,
-    },
-  }
+  },
+  components: {
+    Star,
+    SupportIco,
+  },
+}
 </script>
 <style lang="stylus" scoped>
-  @import "~assets/stylus/mixin"
-  @import "~assets/stylus/variable"
+@import "~@/assets/stylus/mixin"
+  @import "~@/assets/stylus/variable"
 
   .header-detail
     position fixed

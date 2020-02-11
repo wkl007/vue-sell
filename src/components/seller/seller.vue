@@ -85,61 +85,61 @@
 </template>
 
 <script>
-  import Split from 'components/split/split'
-  import Star from 'components/star/star'
-  import SupportIco from 'components/support-ico/support-ico'
-  import { saveToLocal, loadFromLocal } from 'utils/storage'
+import Split from '@/components/split/split'
+import Star from '@/components/star/star'
+import SupportIco from '@/components/support-ico/support-ico'
+import { saveToLocal, loadFromLocal } from '@/utils/storage'
 
-  export default {
-    name: 'seller',
-    props: {
-      data: Object,
-      default () {
-        return {}
+export default {
+  name: 'seller',
+  props: {
+    data: Object,
+    default () {
+      return {}
+    },
+  },
+  components: {
+    Split,
+    Star,
+    SupportIco,
+  },
+  computed: {
+    seller () {
+      return this.data.seller || {}
+    },
+    favoriteText () {
+      return this.favorite ? '已收藏' : '收藏'
+    },
+  },
+  data () {
+    return {
+      favorite: false,
+      sellerScrollOptions: {
+        directionLockThreshold: 0,
+        click: false,
       },
-    },
-    components: {
-      Split,
-      Star,
-      SupportIco,
-    },
-    computed: {
-      seller () {
-        return this.data.seller || {}
+      picScrollOptions: {
+        scrollX: true,
+        stopPropagation: true,
+        directionLockThreshold: 0,
       },
-      favoriteText () {
-        return this.favorite ? '已收藏' : '收藏'
-      },
+    }
+  },
+  created () {
+    this.favorite = loadFromLocal(this.seller.id, 'favorite', false)
+  },
+  methods: {
+    toggleFavorite () {
+      this.favorite = !this.favorite
+      saveToLocal(this.seller.id, 'favorite', this.favorite)
     },
-    data () {
-      return {
-        favorite: false,
-        sellerScrollOptions: {
-          directionLockThreshold: 0,
-          click: false,
-        },
-        picScrollOptions: {
-          scrollX: true,
-          stopPropagation: true,
-          directionLockThreshold: 0,
-        },
-      }
-    },
-    created () {
-      this.favorite = loadFromLocal(this.seller.id, 'favorite', false)
-    },
-    methods: {
-      toggleFavorite () {
-        this.favorite = !this.favorite
-        saveToLocal(this.seller.id, 'favorite', this.favorite)
-      },
-    },
-  }
+  },
+}
 </script>
 
 <style lang="stylus" scoped>
-  @import "~assets/stylus/variable"
-  @import "~assets/stylus/mixin"
+  @import "~@/assets/stylus/variable"
+  @import "~@/assets/stylus/mixin"
 
   .seller
     height 100%

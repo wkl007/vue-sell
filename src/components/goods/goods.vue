@@ -77,132 +77,130 @@
 </template>
 
 <script>
-  import CartControl from 'components/cart-control/cart-control'
-  import ShopCart from 'components/shop-cart/shop-cart'
-  import Food from 'components/food/food'
-  import SupportIco from 'components/support-ico/support-ico'
-  import Bubble from 'components/bubble/bubble'
+import CartControl from '@/components/cart-control/cart-control'
+import ShopCart from '@/components/shop-cart/shop-cart'
+import SupportIco from '@/components/support-ico/support-ico'
+import Bubble from '@/components/bubble/bubble'
 
-  import ApiServer from 'api'
+import ApiServer from '@/api'
 
-  export default {
-    name: 'goods',
-    props: {
-      data: Object,
-      default () {
-        return {}
+export default {
+  name: 'goods',
+  props: {
+    data: Object,
+    default () {
+      return {}
+    },
+  },
+  components: {
+    Bubble,
+    SupportIco,
+    CartControl,
+    ShopCart,
+  },
+  data () {
+    return {
+      goods: [],
+      selectedFood: {},
+      scrollOptions: {
+        click: false,
+        directionLockThreshold: 0,
       },
+    }
+  },
+  computed: {
+    seller () {
+      return this.data.seller
     },
-    components: {
-      Bubble,
-      SupportIco,
-      CartControl,
-      ShopCart,
-      Food,
+    selectFoods () {
+      const foods = []
+      this.goods.forEach((good) => {
+        good.foods.forEach((food) => {
+          if (food.count) {
+            foods.push(food)
+          }
+        })
+      })
+      return foods
     },
-    data () {
-      return {
-        goods: [],
-        selectedFood: {},
-        scrollOptions: {
-          click: false,
-          directionLockThreshold: 0,
-        },
+    barTxts () {
+      const ret = []
+      this.goods.forEach((good) => {
+        const { type, name, foods } = good
+        let count = 0
+        foods.forEach((food) => {
+          count += food.count || 0
+        })
+        ret.push({
+          type,
+          name,
+          count,
+        })
+      })
+      return ret
+    },
+  },
+  methods: {
+    // 获取商品
+    fetch () {
+      if (!this.fetched) {
+        this.fetched = true
+        const params = {
+          id: this.seller.id,
+        }
+        ApiServer.getGoods(params).then(res => {
+          this.goods = res
+        }).catch(err => {})
       }
     },
-    computed: {
-      seller () {
-        return this.data.seller
-      },
-      selectFoods () {
-        let foods = []
-        this.goods.forEach((good) => {
-          good.foods.forEach((food) => {
-            if (food.count) {
-              foods.push(food)
-            }
-          })
-        })
-        return foods
-      },
-      barTxts () {
-        let ret = []
-        this.goods.forEach((good) => {
-          const { type, name, foods } = good
-          let count = 0
-          foods.forEach((food) => {
-            count += food.count || 0
-          })
-          ret.push({
-            type,
-            name,
-            count,
-          })
-        })
-        return ret
-      },
+    // 选择商品
+    selectFood (food) {
+      this.selectedFood = food
+      this._showFood()
+      this._showShopCartSticky()
     },
-    methods: {
-      // 获取商品
-      fetch () {
-        if (!this.fetched) {
-          this.fetched = true
-          let params = {
-            id: this.seller.id,
-          }
-          ApiServer.getGoods(params).then(res => {
-            this.goods = res
-          }).catch(err => {})
-        }
-      },
-      // 选择商品
-      selectFood (food) {
-        this.selectedFood = food
-        this._showFood()
-        this._showShopCartSticky()
-      },
-      // 购物车添加
-      onAdd (target) {
-        this.$refs.shopCart.drop(target)
-      },
-      // 显示商品详情页
-      _showFood () {
-        this.foodComp = this.foodComp || this.$createFood({
-          $props: {
-            food: 'selectedFood',
-          },
-          $events: {
-            add: (target) => {
-              this.shopCartStickyComp.drop(target)
-            },
-            leave: () => {
-              this._hideShopCartSticky()
-            },
-          },
-        })
-        this.foodComp.show()
-      },
-      // 显示购物车浮层
-      _showShopCartSticky () {
-        this.shopCartStickyComp = this.shopCartStickyComp || this.$createShopCartSticky({
-          $props: {
-            selectFoods: 'selectFoods',
-            deliveryPrice: this.seller.deliveryPrice,
-            minPrice: this.seller.minPrice,
-            fold: true,
-          },
-        })
-        this.shopCartStickyComp.show()
-      },
-      _hideShopCartSticky () {
-        this.shopCartStickyComp.hide()
-      },
+    // 购物车添加
+    onAdd (target) {
+      this.$refs.shopCart.drop(target)
     },
-  }
+    // 显示商品详情页
+    _showFood () {
+      this.foodComp = this.foodComp || this.$createFood({
+        $props: {
+          food: 'selectedFood',
+        },
+        $events: {
+          add: (target) => {
+            this.shopCartStickyComp.drop(target)
+          },
+          leave: () => {
+            this._hideShopCartSticky()
+          },
+        },
+      })
+      this.foodComp.show()
+    },
+    // 显示购物车浮层
+    _showShopCartSticky () {
+      this.shopCartStickyComp = this.shopCartStickyComp || this.$createShopCartSticky({
+        $props: {
+          selectFoods: 'selectFoods',
+          deliveryPrice: this.seller.deliveryPrice,
+          minPrice: this.seller.minPrice,
+          fold: true,
+        },
+      })
+      this.shopCartStickyComp.show()
+    },
+    _hideShopCartSticky () {
+      this.shopCartStickyComp.hide()
+    },
+  },
+}
 </script>
 <style lang="stylus" scoped>
-  @import "~assets/stylus/variable"
-  @import "~assets/stylus/mixin"
+  @import "~@/assets/stylus/variable"
+  @import "~@/assets/stylus/mixin"
 
   .goods
     position relative

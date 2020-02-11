@@ -3,26 +3,26 @@
 </template>
 
 <script>
-  export default {
-    name: 'support-ico',
-    props: {
-      size: {
-        type: Number,
-      },
-      type: {
-        type: Number,
-      },
+export default {
+  name: 'support-ico',
+  props: {
+    size: {
+      type: Number,
     },
-    computed: {
-      iconCls () {
-        const classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
-        return `icon-${this.size} ${classMap[this.type]}`
-      },
+    type: {
+      type: Number,
     },
-  }
+  },
+  computed: {
+    iconCls () {
+      const classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
+      return `icon-${this.size} ${classMap[this.type]}`
+    },
+  },
+}
 </script>
 <style lang="stylus" scoped>
-  @import "~assets/stylus/mixin"
+  @import "~@/assets/stylus/mixin"
 
   .support-ico
     display inline-block

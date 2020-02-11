@@ -5,18 +5,18 @@
 </template>
 
 <script>
-  export default {
-    name: 'bubble',
-    props: {
-      num: {
-        type: Number,
-        default: 0,
-      },
+export default {
+  name: 'bubble',
+  props: {
+    num: {
+      type: Number,
+      default: 0,
     },
-  }
+  },
+}
 </script>
 <style lang="stylus" scoped>
-  @import "~assets/stylus/variable"
+  @import "~@/assets/stylus/variable"
 
   .bubble
     display inline-block

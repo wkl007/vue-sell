@@ -77,74 +77,74 @@
 </template>
 
 <script>
-  import moment from 'moment'
-  import CartControl from 'components/cart-control/cart-control'
-  import RatingSelect from 'components/rating-select/rating-select'
-  import Split from 'components/split/split'
-  import popupMixin from 'utils/mixins/popup'
-  import ratingMixin from 'utils/mixins/rating'
+import moment from 'moment'
+import CartControl from '@/components/cart-control/cart-control'
+import RatingSelect from '@/components/rating-select/rating-select'
+import Split from '@/components/split/split'
+import popupMixin from '@/utils/mixins/popup'
+import ratingMixin from '@/utils/mixins/rating'
 
-  const EVENT_SHOW = 'show'
-  const EVENT_ADD = 'add'
-  const EVENT_LEAVE = 'leave'
+const EVENT_SHOW = 'show'
+const EVENT_ADD = 'add'
+const EVENT_LEAVE = 'leave'
 
-  export default {
-    name: 'food',
-    mixins: [popupMixin, ratingMixin],
-    props: {
-      food: {
-        type: Object,
-        default () {
-          return {}
-        },
+export default {
+  name: 'food',
+  mixins: [popupMixin, ratingMixin],
+  props: {
+    food: {
+      type: Object,
+      default () {
+        return {}
       },
     },
-    components: {
-      CartControl,
-      RatingSelect,
-      Split,
+  },
+  components: {
+    CartControl,
+    RatingSelect,
+    Split,
+  },
+  computed: {
+    ratings () {
+      return this.food.ratings
     },
-    computed: {
-      ratings () {
-        return this.food.ratings
+  },
+  data () {
+    return {
+      desc: {
+        all: '全部',
+        positive: '推荐',
+        negative: '吐槽',
       },
-    },
-    data () {
-      return {
-        desc: {
-          all: '全部',
-          positive: '推荐',
-          negative: '吐槽',
-        },
-      }
-    },
-    created () {
-      this.$on(EVENT_SHOW, () => {
-        this.$nextTick(() => {
-          this.$refs.scroll.refresh()
-        })
+    }
+  },
+  created () {
+    this.$on(EVENT_SHOW, () => {
+      this.$nextTick(() => {
+        this.$refs.scroll.refresh()
       })
+    })
+  },
+  methods: {
+    afterLeave () {
+      this.$emit(EVENT_LEAVE)
     },
-    methods: {
-      afterLeave () {
-        this.$emit(EVENT_LEAVE)
-      },
-      addFirst (event) {
-        this.$set(this.food, 'count', 1)
-        this.$emit(EVENT_ADD, event.target)
-      },
-      addFood (target) {
-        this.$emit(EVENT_ADD, target)
-      },
-      format (time) {
-        return moment(time).format('YYYY-MM-DD hh:mm')
-      },
+    addFirst (event) {
+      this.$set(this.food, 'count', 1)
+      this.$emit(EVENT_ADD, event.target)
     },
-  }
+    addFood (target) {
+      this.$emit(EVENT_ADD, target)
+    },
+    format (time) {
+      return moment(time).format('YYYY-MM-DD hh:mm')
+    },
+  },
+}
 </script>
 <style lang="stylus" scoped>
-  @import "~assets/stylus/variable"
-  @import "~assets/stylus/mixin"
+  @import "~@/assets/stylus/variable"
+  @import "~@/assets/stylus/mixin"
 
   .food
     position fixed
