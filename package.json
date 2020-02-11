@@ -2,6 +2,7 @@
   "name": "vue-sell",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://wkl007.github.io/vue-sell",
   "scripts": {
     "commit": "git-cz",
     "serve": "vue-cli-service serve",

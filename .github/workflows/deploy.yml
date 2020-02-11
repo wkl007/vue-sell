@@ -1,0 +1,23 @@
+name: Vue Sell
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2.0.0
+        with:
+          ref: master
+      - name: install
+        run: |
+          npm install
+          npm run-script lint
+          npm run-script build
+      - name: build and deploy
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BASE_BRANCH: master
+          BRANCH: gh-pages
+          FOLDER: dist
+          CLEAN: true
