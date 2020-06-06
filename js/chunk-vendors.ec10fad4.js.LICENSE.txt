@@ -15,3 +15,5 @@
  * (c) 2019 ustbhuangyi
  * @license MIT
  */
+
+//! moment.js
