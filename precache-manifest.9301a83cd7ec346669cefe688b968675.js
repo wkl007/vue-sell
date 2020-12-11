@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "46e7850d119d88c2fb9e",
+    "revision": "0ebdd265a3e6b938e374",
     "url": "/vue-sell/css/app.b90d2b7b.css"
   },
   {
-    "revision": "6f0176c6ab504c012a6e",
+    "revision": "5692bb6d6b6d3774be53",
     "url": "/vue-sell/css/chunk-vendors.fd00d87b.css"
   },
   {
@@ -32,20 +32,20 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/vue-sell/img/sell-icon.98413c3c.svg"
   },
   {
-    "revision": "ab94c64d25e5f29e13983c1b54b31189",
+    "revision": "999822766e6651726502321730582437",
     "url": "/vue-sell/index.html"
   },
   {
-    "revision": "46e7850d119d88c2fb9e",
-    "url": "/vue-sell/js/app.729139a8.js"
+    "revision": "0ebdd265a3e6b938e374",
+    "url": "/vue-sell/js/app.e9a89550.js"
   },
   {
-    "revision": "6f0176c6ab504c012a6e",
-    "url": "/vue-sell/js/chunk-vendors.08cbbab1.js"
+    "revision": "5692bb6d6b6d3774be53",
+    "url": "/vue-sell/js/chunk-vendors.35c53c8e.js"
   },
   {
     "revision": "996e4fbde4d18b61ab0982017c30df24",
-    "url": "/vue-sell/js/chunk-vendors.08cbbab1.js.LICENSE.txt"
+    "url": "/vue-sell/js/chunk-vendors.35c53c8e.js.LICENSE.txt"
   },
   {
     "revision": "4c6f1e299d252a904d93286fd76af8a0",
