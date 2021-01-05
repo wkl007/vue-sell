@@ -10,7 +10,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "core-js": "^3.7.0",
     "cube-ui": "^1.12.44",
     "good-storage": "^1.1.1",
