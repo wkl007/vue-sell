@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/vue-sell/precache-manifest.8c073d87d4b06a4c194a563011223c52.js"
+  "/vue-sell/precache-manifest.228af0d7792a5aa1b700af55d310c155.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "vue-sell"});
