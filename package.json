@@ -10,28 +10,28 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "axios": "^0.21.2",
-    "core-js": "^3.7.0",
-    "cube-ui": "^1.12.44",
+    "axios": "^0.25.0",
+    "core-js": "^3.20.3",
+    "cube-ui": "^1.12.47",
     "good-storage": "^1.1.1",
     "moment": "^2.29.1",
-    "register-service-worker": "^1.7.1",
-    "vue": "^2.6.12"
+    "register-service-worker": "^1.7.2",
+    "vue": "^2.6.14"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
-    "@vue/cli-plugin-babel": "~4.5.8",
-    "@vue/cli-plugin-eslint": "~4.5.8",
-    "@vue/cli-plugin-pwa": "~4.5.8",
-    "@vue/cli-service": "~4.5.8",
+    "@vue/cli-plugin-babel": "~4.5.15",
+    "@vue/cli-plugin-eslint": "~4.5.15",
+    "@vue/cli-plugin-pwa": "~4.5.15",
+    "@vue/cli-service": "~4.5.15",
     "@vue/eslint-config-standard": "^5.1.2",
     "babel-eslint": "^10.1.0",
-    "commitizen": "^4.2.2",
+    "commitizen": "^4.2.4",
     "compression-webpack-plugin": "^6.1.0",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.13.0",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.1.0",
@@ -42,7 +42,7 @@
     "stylus-loader": "^3.0.2",
     "terser-webpack-plugin": "^2.3.4",
     "vue-cli-plugin-cube-ui": "~0.2.5",
-    "vue-template-compiler": "^2.6.12"
+    "vue-template-compiler": "^2.6.14"
   },
   "config": {
     "commitizen": {
